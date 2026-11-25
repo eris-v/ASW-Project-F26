@@ -22,4 +22,25 @@ public abstract class User {
     public boolean login(String username, String password) {
         return username.equals(this.username) && password.equals(this.password);
     }
+
+    public void logout(){
+        System.out.println(this.username + " has been logged out");
+    }
+
+    public void updateProfile(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public void changePassword(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public void deactivateAccount() {
+        this.isActive = false;
+    }
+    public void activateAccount() {
+        this.isActive = true;
+    }
 }
