@@ -19,14 +19,15 @@ public abstract class Membership {
         this.hasAds = hasAds;
     }
 
-    public boolean canBorrowMore(Integer currentLoans){
-        return currentLoans != null && currentLoans >= maxActiveLoans;
+    public boolean canBorrowMore(Integer currentLoans) {
+        return currentLoans != null && currentLoans < maxActiveLoans;
     }
-    public boolean canRenew(Integer currentLoans){
-        return currentLoans != null && currentLoans >= maxRenewals;
+
+    public boolean canRenew(Integer currentRenewals) {
+        return currentRenewals != null && currentRenewals < maxRenewals;
     }
-    public  LocalDate calculateDueDate(){
-        return startDate.plusDays(this.loanDurationDays);
+    public  LocalDate calculateDueDate(LocalDate today){
+        return today.plusDays(this.loanDurationDays);
     }
     public String getTierBenefits() {
         return String.format("%s Tier: $%.2f/mo | Max Loans: %d | Duration: %d days | Renewals: %d | Offline: %b | Ads: %b",

@@ -36,19 +36,30 @@ public class Ultimate extends Membership {
     }
 
     public boolean joinPriorityWaitList(Item item) {
-        if (!this.priorityWaitList || item == null) {
+        return this.priorityWaitList && item != null;
+    }
+
+    public boolean joinPriorityWaitList(Item item, Member member) {
+        return joinPriorityWaitList(item, member, Database.getInstance());
+    }
+
+    public boolean joinPriorityWaitList(Item item, Member member, Database db) {
+        if (!this.priorityWaitList || item == null || member == null) {
             return false;
         }
-        return true;
+        Database targetDb = (db != null) ? db : Database.getInstance();
+        return targetDb.addToWaitList(item, member);
     }
+
     public boolean processSubscriptionRenewal() {
         if (this.paymentMethod == null || this.paymentMethod.isBlank()) {
             return false;
         }
+        LocalDate baseDate = (this.renewalDate != null) ? this.renewalDate : LocalDate.now();
         if ("ANNUAL".equalsIgnoreCase(this.billingCycle)) {
-            this.renewalDate = this.renewalDate.plusYears(1);
+            this.renewalDate = baseDate.plusYears(1);
         } else {
-            this.renewalDate = this.renewalDate.plusMonths(1);
+            this.renewalDate = baseDate.plusMonths(1);
         }
         return true;
     }
